@@ -7,8 +7,14 @@
  * @author Benjamin Knoop <benjamin@bennys-planet.de>
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { forwardRef, useState, useEffect, useImperativeHandle } from 'react';
 import './Countdown.css';
+
+const CountdownState = {
+    RUNNING: 'RUNNING',
+    PAUSED: 'PAUSED',
+    TIMEDOUT: 'TIMEDOUT'
+};
 
 /**
  * Calculates the difference between the end time as unix epoch in milliseconds and the current system time. The endTimestamp is assumed to be in the future, otherwise -1 will be returned (to encode an error and not a timed out operation).
@@ -79,14 +85,48 @@ const formatDeltaTimeAsString = (delta) => {
  * Functional React component to display the remaining hours, minutes and seconds until a given end date as property
  * @param {number} endTimestamp unix epoch in milliseconds
  */
-const Countdown = ({ endTimestamp }) => {
+const Countdown = ({ endTimestamp, onTimedOut }) => {
+    // initially the counter is running
+    const [countdownState, setCountdownState] = useState(CountdownState.RUNNING);
+
     // state 'remainingSeconds' is updated to trigger a re-rendering
     const [, setRemainingSeconds] = useState(calculateRemainingSeconds(endTimestamp));
+
+    // tick callback
+    const tick = () => {
+        if(countdownState === CountdownState.RUNNING) {
+            const remainder = calculateRemainingSeconds(endTimestamp);
+            setRemainingSeconds(remainder)
+
+            // check if timed out
+            if(remainder < 0) {
+                // call timedOut callback if available
+                if(onTimedOut) {
+                    onTimedOut();
+                }
+                // and set counter to paused
+                setCountdownState(CountdownState.TIMEDOUT);
+        }
+
+        }
+
+    }
+
+    const isPaused = countdownState === CountdownState.PAUSED;
+
+    const togglePaused =  () => {
+                if(countdownState === CountdownState.PAUSED) {
+                    setCountdownState(CountdownState.RUNNING);
+                } else if(countdownState === CountdownState.RUNNING) {
+                    setCountdownState(CountdownState.PAUSED);
+                }
+                // alert('toggled ' + countdownState);
+            }
 
     // update every second...
     useEffect(() => {
         const timer = setInterval(() => {
-            setRemainingSeconds(calculateRemainingSeconds(endTimestamp));
+            tick();
         }, 1000);
 
         return () => clearInterval(timer);
@@ -126,6 +166,7 @@ const Countdown = ({ endTimestamp }) => {
                 <div className="countdown-text">{endDateString}</div>
             </div>
             <div className="countdown-spacer" />
+            <button onClick={togglePaused}>{isPaused ? 'Resume' : 'Pause'} this!</button>
         </div>
     )
 };

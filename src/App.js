@@ -1,10 +1,13 @@
+import React from 'react';
+
 import './App.css';
 import Countdown from './Countdown';
 
-function App() {
+const App = () => {
+
   return (
     <div className="App">
-      <Countdown endTimestamp={new Date().getTime()+(42.002*3600*1000)}/>
+      <Countdown endTimestamp={new Date().getTime()+(42000)} />
     </div>
   );
 }
