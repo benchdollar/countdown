@@ -1,5 +1,5 @@
 {
-  "name": "countdown",
+  "name": "react-countdown-timer",
   "version": "0.1.0",
   "license": "MIT",
     "dependencies": {
@@ -15,6 +15,10 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benchdollar/countdown.git"
   },
   "eslintConfig": {
     "extends": [
