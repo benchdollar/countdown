@@ -1,0 +1,57 @@
+/* Countdown.css
+ * @author Benjamin Knoop
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@900&display=swap");
+
+.countdown-container * {
+  /* border: 1px solid black; */
+  font-family: sans-serif;
+}
+
+.countdown-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.countdown-titling {
+  text-align: center;
+  font-weight: bold;
+}
+
+.countdown-timer {
+  font-size: max(25vh, 96pt);
+  min-height: max(30vh, 128pt);
+  font-weight: bold;
+  text-align: center;
+  font-family: "Inconsolata", monospace;
+}
+
+@media (max-width: 750px) {
+  .countdown-timer {
+    font-size: 20vw;
+    min-height: 30vw;
+  }
+}
+
+.countdown-subtitle {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.countdown-text {
+  color: #555;
+  font-style: italic;
+  text-align: center;
+  padding: 0px;
+}
+
+.countdown-spacer {
+  min-height: 8px;
+  flex: 1 0 auto;
+}
